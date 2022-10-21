@@ -9,6 +9,9 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  "globals": {
+	"cy": true		// disables linters warning of "'cy' is not defined"
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
