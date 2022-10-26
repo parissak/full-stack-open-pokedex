@@ -37,8 +37,10 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: deploy
         run: flyctl deploy --remote-only
+        if: ${{ !contains(github.event.commits.*.message, '#skip') }}
         if: ${{ github.event_name == 'push' }}
   tag_releases:
+    if: ${{ !contains(github.event.commits.*.message, '#skip') }}
     if: ${{ github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
