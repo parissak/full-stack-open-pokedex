@@ -36,10 +36,10 @@ jobs:
           wait-on: http://localhost:5000
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: deploy
+        if: ${{ !contains(toJson(join(github.event.commits.*.message, ' ')), '#skip') && github.event_name == 'push' }}
         run: flyctl deploy --remote-only
-        if: ${{ github.event_name == 'push' }}
   tag_releases:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ !contains(toJson(join(github.event.commits.*.message, ' ')), '#skip') && github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     steps:
