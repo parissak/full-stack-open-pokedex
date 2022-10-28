@@ -38,6 +38,23 @@ jobs:
       - name: deploy
         if: ${{ !contains(toJson(join(github.event.commits.*.message, ' ')), '#skip') && github.event_name == 'push' }}
         run: flyctl deploy --remote-only
+      - name: send success notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ success() }}
+        with:
+          severity: info
+	        description: 'Commit ${{ github.sha }}'
+          details: Build succeeded.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: send failure notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ failure() }}
+        with:
+          severity: error
+	        description: 'Commit ${{ github.sha }}'
+          details: Build failed.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          
   tag_releases:
     if: ${{ !contains(toJson(join(github.event.commits.*.message, ' ')), '#skip') && github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
