@@ -41,10 +41,10 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ success() }}
         with:
-          severity: info
+	  severity: info
 	  description: 'Commit ${{ github.sha }}'
-          details: Build succeeded.
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+	  details: Build succeeded.
+	  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: send failure notification
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ failure() }}
