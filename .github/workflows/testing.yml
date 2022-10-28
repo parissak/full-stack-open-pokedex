@@ -34,3 +34,8 @@ jobs:
         env:
           COMMIT_SHA: ${{ github.sha }}
         run: echo "$COMMIT_SHA" 
+      - name: sha of PR
+        env:
+          PR_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        run: echo "$PR_COMMIT_SHA" 
+
