@@ -30,7 +30,7 @@ jobs:
         env:
           CONTAINS: ${{ contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
         run: echo "$CONTAINS" 
-      - name: more testing output
+      - name: sha of commit
         env:
           COMMIT_SHA: ${{ github.sha }}
         run: echo "$COMMIT_SHA" 
