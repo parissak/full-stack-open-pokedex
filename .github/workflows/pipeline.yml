@@ -51,9 +51,9 @@ jobs:
         with:
           severity: error
 	  description: 'Commit ${{ github.sha }}'
-          details: Build failed.
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          
+	  details: Build failed.
+	  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+	  
   tag_releases:
     if: ${{ !contains(toJson(join(github.event.commits.*.message, ' ')), '#skip') && github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
