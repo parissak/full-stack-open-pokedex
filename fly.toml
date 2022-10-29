@@ -1,12 +1,14 @@
-# fly.toml file generated for crimson-thunder-9481 on 2022-10-24T11:20:07+03:00
+# fly.toml file generated for red-shadow-75 on 2022-10-29T16:23:38+03:00
 
-app = "crimson-thunder-9481"
+app = "red-shadow-75"
 kill_signal = "SIGINT"
 kill_timeout = 5
-processes = []
 
 [build]
   builder = "heroku/buildpacks:20"
+
+[deploy]
+  release_command = "npm run build"
 
 [env]
   PORT = "8080"
@@ -15,32 +17,27 @@ processes = []
   allowed_public_ports = []
   auto_rollback = true
 
+[processes]
+  app = "node app.js"
+
 [[services]]
   internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
-
-  [[services.script_checks]]
-    command       = "/app/health_check.sh"
-    grace_period  = "1s"
-    interval      = "5s"
-    restart_limit = 0
-    timeout       = "1s"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
 
   [[services.http_checks]]
-    interval = 10000
     grace_period = "10s"
+    interval = 10000
     method = "get"
     path = "/health"
     protocol = "http"
     restart_limit = 0
     timeout = 4000
     tls_skip_verify = false
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
 
   [[services.ports]]
     force_https = true
@@ -51,14 +48,15 @@ processes = []
     handlers = ["tls", "http"]
     port = 443
 
+  [[services.script_checks]]
+    command = "/app/health_check.sh"
+    grace_period = "1s"
+    interval = "5s"
+    restart_limit = 0
+    timeout = "1s"
+
   [[services.tcp_checks]]
     grace_period = "1s"
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
-
-[deploy]
-  release_command = "npm run build"
-
-[processes]
-  app = "node app.js"
